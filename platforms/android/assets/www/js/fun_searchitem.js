@@ -18,7 +18,7 @@ window.addEventListener('native.onscanbarcode', function (schitem) {
 });
             function itemProfile(bcitem){
                                        // var valwh = document.getElementById("valwh").value;
-                                        console.log(bcitem);
+                                        console.log('barcodez   '+bcitem);
                                         var tiwh = "";
                                         var itemdetail = "";
 
@@ -37,6 +37,7 @@ window.addEventListener('native.onscanbarcode', function (schitem) {
                                                    console.log(localStorage.api_url_server+""+localStorage.api_url_profile_it);
                                                    console.log(JSON.stringify(result));
                                                    if(result.itemProfileList.length==0){
+//                                                       console.log('ตัวปัญหา result'+JSON.stringify(result));
                                                        alertify.alert("บาร์โค้ด "+bcitem+" ไม่มีข้อมูลทะเบียน");
                                                        closeload();
                                                        $("#bt-item").show();
@@ -200,9 +201,16 @@ window.addEventListener('native.onscanbarcode', function (schitem) {
 
                                                         itemdetail += '<div class="ui-grid-a" style="padding-bottom:5%;">';
                                                         itemdetail += '<div class="ui-block-a" style="width:35%; font-weight: bold;">';
-                                                        itemdetail += 'รหัสบาร์โค้ด :</div>';
+                                                        itemdetail += 'บาร์โค้ด :</div>';
                                                         itemdetail += '<div class="ui-block-b" style="text-align:left; padding-left:2%; width:65%;">';
                                                         itemdetail += bcCode+'</div>';
+                                                        itemdetail += '</div>';
+
+                                                        itemdetail += '<div class="ui-grid-a" style="padding-bottom:5%;">';
+                                                        itemdetail += '<div class="ui-block-a" style="width:35%; font-weight: bold;">';
+                                                        itemdetail += 'รหัสสินค้า :</div>';
+                                                        itemdetail += '<div class="ui-block-b" style="text-align:left; padding-left:2%; width:65%;">';
+                                                        itemdetail += itemCode+'</div>';
                                                         itemdetail += '</div>';
 
                                                         itemdetail += '<div class="ui-grid-a" style="padding-bottom:5%;">';
@@ -229,6 +237,14 @@ window.addEventListener('native.onscanbarcode', function (schitem) {
                                                         itemdetail += '<div class="ui-block-d" style="text-align:left; padding-left:2%; width:20%;">';
                                                         itemdetail += rang+'</div>';
                                                         itemdetail += '</div>';
+
+                                                        itemdetail += '<div class="ui-grid-c" style="padding-bottom:5%;">';
+                                                        itemdetail += '<div class="ui-block-a" style="width:35%; font-weight: bold;">';
+                                                        itemdetail += 'ราคา :</div>';
+                                                        itemdetail += '<div class="ui-block-b" style="text-align:left; padding-left:2%; width:15%;">';
+                                                        itemdetail += price+'</div>';
+                                                        itemdetail += '<div class="ui-grid-c" style="padding-bottom:5%;"></div>';
+
 
                                                         itemdetail += '<div class="ui-grid-d" style="border-top:1px solid black; border-bottom:1px solid black; padding:2% 0; width:100%;">';
                                                         itemdetail += '<div class="ui-block-a" style="text-align:center; width:5%; text-align:center;">';
@@ -338,17 +354,17 @@ window.addEventListener('native.onscanbarcode', function (schitem) {
 
                                                         var x = 1;
                                                         $.each(js, function(key, val) {
-                                                        console.log('ค่า x นะ  '+x);
+//                                                        console.log('ค่า x นะ  '+x);
                                                         console.log(JSON.stringify(val))
 
 //                                                        itemdetail += '<label id="'+x+'">'; /***** หา label id จาก a href     */////
 
                                                         itemdetail += '<div class="ui-grid-b" style="padding-bottom:5%;">';
-                                                        itemdetail += '<div class="ui-block-a" style="width:20%;">';
+                                                        itemdetail += '<div class="ui-block-a" style="width:18%;">';
                                                         itemdetail += ''+val['whCode']+'</div>';
-                                                        itemdetail += '<div class="ui-block-b" style="width:26%;">';
+                                                        itemdetail += '<div class="ui-block-b" style="width:35%;text-align:center;">';
                                                         itemdetail += val['shelfCode']+'</div>';
-                                                        itemdetail += '<div class="ui-block-c" style="width:33%; text-align:center;">';
+                                                        itemdetail += '<div class="ui-block-c" style="width:40%; text-align:center;">';
                                                         itemdetail += val['qty']+' '+val['stkunitcode']+'</div>';
                                                         itemdetail += '</div>';
 
@@ -533,6 +549,7 @@ function like_itemProfile(){
     if(itemdata!=""){
         var itemlist = "";
             $.ajax({
+
                        url: localStorage.api_url_server+"NPInventoryWs/V2/inven/searchItemMaster",
                        data: '{"accessToken":"'+localStorage.token+'","search":"'+itemdata+'"}',
                        contentType: "application/json; charset=utf-8",
@@ -540,6 +557,8 @@ function like_itemProfile(){
                        type: "POST",
                        cache: false,
                        success: function(result){
+                       console.log("token search idz    "+'"accessToken":"'+localStorage.token+'","search":"'+itemdata+'"');
+                       console.log('api searchh '+localStorage.api_url_server+"NPInventoryWs/V2/inven/searchItemMaster");
                             console.log(JSON.stringify(result.itemMasterList));
                             if(JSON.stringify(result.itemMasterList)=="[]"){
                                itemlist = '<label style="width:100%; color:red;"> ** ไม่มีข้อมูลที่ค้นหา ** </label>';
